@@ -30,9 +30,19 @@ class PostgresSettings(BaseSettings):
         return f"postgresql://{self.db_user}:{self.password}@{self.host}:{self.port}/{self.dbname}"
 
 
+class AuthJWTSettings(BaseSettings):
+    authjwt_secret_key: str = Field(
+        validation_alias="BLOCK_PLATFORM_SECRET_KEY", default="secret"
+    )
+    authjwt_algorithm: str = Field(
+        validation_alias="BLOCK_PLATFORM_AUTHJWT_ALGORITHM", default="HS256"
+    )
+
+
 class Settings(BaseSettings):
     app: AppSettings = Field(default_factory=AppSettings)
     postgres: PostgresSettings = Field(default_factory=PostgresSettings)
+    auth: AuthJWTSettings = Field(default_factory=AuthJWTSettings)
 
 
 @cache
